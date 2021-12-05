@@ -130,7 +130,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
-    'HIDE_USERS': False
+    'HIDE_USERS': False,
+    'SERIALIZERS': {},
 }
 
 REST_FRAMEWORK = {

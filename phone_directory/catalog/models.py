@@ -16,13 +16,13 @@ class Staffer(models.Model):
         max_length=12,
         verbose_name='Рабочий телефон'
     )
-    personal_phone=models.CharField(
+    personal_phone = models.CharField(
         blank=True,
         max_length=12,
         unique=True,
         verbose_name='Личный телефон'
     )
-    fax_number=models.CharField(
+    fax_number = models.CharField(
         blank=True,
         max_length=12,
         verbose_name='Факс'
@@ -32,7 +32,7 @@ class Staffer(models.Model):
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
         ordering = ['staffer']
-    
+
     def __str__(self):
         return self.staffer
 
@@ -42,7 +42,7 @@ class Company(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='thecompany',
-        verbose_name= 'Создатель',
+        verbose_name='Создатель',
     )
     manager = models.ManyToManyField(
         User,
@@ -52,15 +52,15 @@ class Company(models.Model):
     )
     name = models.CharField(
         max_length=100,
-        verbose_name= 'Название',
+        verbose_name='Название',
         unique=True,
     )
     adress = models.CharField(
         max_length=100,
-        verbose_name= 'Адрес'
+        verbose_name='Адрес'
     )
     description = models.TextField(
-        max_length=200, 
+        max_length=200,
         verbose_name='Описание компании'
     )
     staffer = models.ManyToManyField(
@@ -70,13 +70,13 @@ class Company(models.Model):
     )
     created = models.DateField(
         auto_now_add=True,
-        verbose_name= 'Дата создания',
+        verbose_name='Дата создания',
     )
 
     class Meta:
         verbose_name = 'Компания'
         verbose_name_plural = 'Компании'
         ordering = ['name']
-    
+
     def __str__(self):
         return self.name

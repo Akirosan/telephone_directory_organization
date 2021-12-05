@@ -17,8 +17,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     pagination_class = PageNumberPagination
-    permission_classes=[IsAuthenticated]
-
+    permission_classes = [IsAuthenticated]
 
     @action(
         methods=['get'],
@@ -26,7 +25,6 @@ class CompanyViewSet(viewsets.ModelViewSet):
         url_path='my',
         permission_classes=[IsAuthenticated],
     )
-
     def get_my_company(self, request):
         queryset = self.queryset.filter(creator=self.request.user)
         serializer = CompanySerializer(queryset, many=True)
@@ -37,22 +35,18 @@ class StafferViewSet(viewsets.ModelViewSet):
     queryset = Staffer.objects.all()
     serializer_class = StafferSerializer
     pagination_class = PageNumberPagination
-    permission_classes=[IsCreatorManagerOrRedonly]
+    permission_classes = [IsCreatorManagerOrRedonly]
 
 
 class ManagerViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = ManagerSerializer
     pagination_class = PageNumberPagination
-    permission_classes=[IsCreatorManagerOrRedonly, ]
+    permission_classes = [IsCreatorManagerOrRedonly, ]
 
     def filter_queryset(self, queryset):
-        queryset = self.queryset.filter(myorganisations__manager=self.request.user)
+        queryset = self.queryset.filter(
+            myorganisations__manager=self.request.user
+        )
         return queryset
 
-    # def perform_create(self, serializer):
-    #     company = get_object_or_404(Company, id=self.request.data.get('company'))
-    #     user = get_object_or_404(User, email=self.request.data.get('email'))
-    #     company.manager.add(user)
-        # import ipdb; ipdb.set_trace()
-        # serializer.save(review=review, author=self.request.user)

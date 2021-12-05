@@ -14,10 +14,16 @@ class StafferSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(StafferSerializer, self).to_representation(instance)
-        return OrderedDict([(key, result[key]) for key in result if result[key] ])
+        return OrderedDict(
+            [(key, result[key]) for key in result if result[key]]
+        )
 
     def validate(self, attrs):
-        if attrs.get('work_phone')==None and attrs.get('personal_phone')==None and attrs.get('work_phone')==None:
+        if (
+            attrs.get('work_phone') is None
+            and attrs.get('personal_phone') is None
+            and attrs.get('work_phone') is None
+        ):
             raise ValueError('Должен быть хотя бы один номер телефона')
         return super().validate(attrs)
 
@@ -42,6 +48,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class ManagerSerializer(serializers.ModelSerializer):
     username = serializers.CharField(read_only=True)
+
     class Meta:
         model = User
         fields = ('username', 'email')
