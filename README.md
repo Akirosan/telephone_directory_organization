@@ -3,20 +3,24 @@
 
 
 Для установки: 
-* скачайте проект к себе на компьютер 
+* скачайте проект на свой компьютер 
 * Установите виртуальное окружение
 * Выполните миграции
 * Зарегистрируйте суперпользователя
 
-* Существующие эндпойнты
+
+
+# Существующие эндпойнты
 
 ***************  Пользователи  *************
 
-###   Список пользователей
+*   Список пользователей
+```python
 GET http://localhost/api/users/
+```
 
-
-###   Регистрация пользователя 
+*   Регистрация пользователя 
+```python
 POST http://localhost/api/users/ 
 
 {
@@ -26,26 +30,30 @@ POST http://localhost/api/users/
     "last_name": "Lastname",
     "password": "Password"
 }
+```
 
-
-###  Информация о юзере
+*  Информация о юзере
+```python
 GET http://localhost/api/users/2/
+```
 
-
-###  Информация о текущем юзере
+*  Информация о текущем юзере
+```python
 GET http://localhost/api/users/me/
+```
 
-
-###  Смена пароля
+*  Смена пароля
+```python
 POST http://localhost/api/users/set_password/
 
 {
     "new_password": "Password",
     "current_password": "Passwor2"
 }
+```
 
-
-###  Авторизация (Получение токена)
+*  Авторизация (Получение токена)
+```python
 POST http://localhost/auth/token/login/ 
 content-type: application/json
 
@@ -53,21 +61,28 @@ content-type: application/json
     "email": "user@user.ru",
     "password": "Password"
 }
+```
 
-
-###  Выход (Удаление токена)
+*  Выход (Удаление токена)
+```python
 POST http://localhost/auth/token/logout/
+```
 
 
 **************    Организация    *************
 
-###   Список организаций
+*   Список организаций
+```python
 GET http://localhost/api/company/
+```
 
-###   Список моих организаций
+*   Список моих организаций
+```python
 GET http://localhost/api/company/my/
+```
 
-###   Создать организацию
+*   Создать организацию
+```python
 POST http://localhost/api/company/
 
 {
@@ -80,29 +95,29 @@ POST http://localhost/api/company/
         6
     ]
 }
+```
 
-###   Одна организация
+*   Одна организация
+```python
 GET http://localhost/api/company/5/
+```
 
 
 **************    сотрудники    *************
 
-###   Список сотрудников
+*   Список сотрудников
+```python
 GET http://localhost/api/staffer/
-content-type: application/json
-Authorization: Token cbef2b4c1ec49d03161dfab5283f551abe8377d6
+```
 
-
-###   Один сотрудник
+*   Один сотрудник
+```python
 GET http://localhost/api/staffer/7/
-content-type: application/json
-Authorization: Token cbef2b4c1ec49d03161dfab5283f551abe8377d6
+```
 
-
-###   Создать сотрудника
+*   Создать сотрудника
+```python
 POST http://localhost/api/staffer/
-content-type: application/json
-Authorization: Token cbef2b4c1ec49d03161dfab5283f551abe8377d6
 
 { 
     "staffer": "Конюхов Геннадий Петрович",
@@ -111,19 +126,23 @@ Authorization: Token cbef2b4c1ec49d03161dfab5283f551abe8377d6
     "personal_phone": "+7 987 78634"
     "fax_number": "+7 987 78634"
 }
-
+```
 
 **************    менеджеры    *************
 
 
-###   Список менеджеров
+*   Список менеджеров
+```python
 GET http://localhost/api/manager/
+```
 
 
-###   Добавить менеджера
+*   Добавить менеджера
+```python
 POST http://localhost/api/manager/
 
 {
     "email": "stas@gatas.ru",
     "company": 2
 }
+```
