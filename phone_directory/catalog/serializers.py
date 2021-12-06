@@ -38,7 +38,7 @@ class StafferSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    staffer = StafferSerializer(many=True, read_only=True)
+    staffer = StafferSerializer(source='staffers', many=True, read_only=True)
 
     class Meta:
         model = Company
