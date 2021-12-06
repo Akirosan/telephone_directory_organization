@@ -2,7 +2,9 @@ from collections import OrderedDict
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
+from djoser.serializers import UserCreateSerializer
+from rest_framework import serializers, status
+from rest_framework.response import Response
 
 from .models import Company, Staffer
 
@@ -10,7 +12,14 @@ from .models import Company, Staffer
 class StafferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staffer
-        fields = '__all__'
+        fields = (
+            'staffer',
+            'post',
+            'work_phone',
+            'personal_phone',
+            'fax_number',
+            'company'
+        )
 
     def to_representation(self, instance):
         result = super(StafferSerializer, self).to_representation(instance)
@@ -40,9 +49,6 @@ class CompanySerializer(serializers.ModelSerializer):
         company = Company.objects.create(
             creator=creator, **validated_data
         )
-        staffers = self.initial_data.get('staffer')
-        for staff in staffers:
-            company.staffer.add(get_object_or_404(Staffer, pk=staff))
         return company
 
 
@@ -57,10 +63,21 @@ class ManagerSerializer(serializers.ModelSerializer):
         company = get_object_or_404(
             Company, id=self.initial_data.get('company')
             )
-        if company.creator == self.context['request'].user:
-            company.manager.add(
-                get_object_or_404(User, email=self.initial_data.get('email'))
-            )
-            return company
-        else:
-            raise ValueError('Вы не являетесь создателем этой компании')
+        company.manager.add(
+            get_object_or_404(User, email=self.initial_data.get('email'))
+        )
+        return Response({"Добавлен"}, status=status.HTTP_201_CREATED,)
+
+
+class CustomUserSerializer(UserCreateSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+        )

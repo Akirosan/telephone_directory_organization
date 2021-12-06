@@ -131,7 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+        'user_create': 'catalog.serializers.CustomUserSerializer',
+    },
 }
 
 REST_FRAMEWORK = {
@@ -140,5 +142,4 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
-    
 }

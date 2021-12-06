@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 
 from .models import Company, Staffer
-from .permissions import IsCreatorManagerOrRedonly
+from .permissions import IsCreatorOrReadOnly, IsManagerOrReadOnly
 from .serializers import (CompanySerializer, ManagerSerializer,
                           StafferSerializer)
 
@@ -17,7 +19,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @action(
         methods=['get'],
@@ -32,17 +34,17 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class StafferViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsCreatorOrReadOnly | IsManagerOrReadOnly]
     queryset = Staffer.objects.all()
     serializer_class = StafferSerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsCreatorManagerOrRedonly]
 
 
 class ManagerViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = ManagerSerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsCreatorManagerOrRedonly, ]
+    permission_classes = [IsCreatorOrReadOnly]
 
     def filter_queryset(self, queryset):
         queryset = self.queryset.filter(
@@ -50,3 +52,16 @@ class ManagerViewSet(viewsets.ModelViewSet):
         )
         return queryset
 
+    @action(
+        methods=['delete'],
+        detail=False,
+        permission_classes=[IsCreatorOrReadOnly],
+    )
+    def delete(self, request):
+        company = get_object_or_404(
+            Company, id=request.data.get('company')
+            )
+        company.manager.remove(
+            get_object_or_404(User, email=request.data.get('email'))
+        )
+        return Response({"Удален"},)
