@@ -230,7 +230,7 @@ Authorization: Token <token>
 
 *   Удалить управляющего по email и id компании
 ```python
-POST http://localhost/api/manager/
+DELETE http://localhost/api/manager/
 content-type: application/json
 Authorization: Token <token>
 
