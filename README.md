@@ -198,6 +198,9 @@ Authorization: Token <token>
     "work_phone": "+7 846 56232",
     "personal_phone": "+7 987 78634"
     "fax_number": "+7 987 78634"
+    "company": [
+        1
+    ]
 }
 ```
 
